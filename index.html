@@ -1,0 +1,233 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id=""
+                  title=""
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Présentation et installation de Nagios" duration="0">
+        <h2 is-upgraded><strong>Présentation</strong></h2>
+<p>L&#39;administrateur réseau d&#39;une société souhaite mettre en place un outil de supervision au sein de l&#39;entreprise.</p>
+<ol type="1" start="1">
+<li>A quoi sert un outil de supervision ?</li>
+<li>Quels sont les protocoles utilisés pour faire de la supervision ?</li>
+<li>Donner différents logiciels de supervision.</li>
+</ol>
+<h2 is-upgraded><strong>Installation de Nagios</strong></h2>
+<p>Suivez le tutoriel ci-dessous afin d&#39;installer nagios :</p>
+<p><a href="https://support.nagios.com/kb/article/nagios-core-installing-nagios-core-from-source-96.html#Ubuntu" target="_blank">https://support.nagios.com/kb/article/nagios-core-installing-nagios-core-from-source-96.html#Ubuntu</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Structure de Nagios" duration="0">
+        <p>Les fichiers Nagios sont organisés dans différents dossiers. Le répertoire natif de Nagios est <code>/usr/local/nagios/</code></p>
+<ol type="1" start="1">
+<li>Lister le contenu de ce dossier</li>
+<li>Associer à chaque dossier une définition parmis la liste ci-dessous :</li>
+</ol>
+<ul>
+<li>Contient le programme principal de Nagios</li>
+<li>Contient l&#39;ensemble des plugins standards</li>
+<li>Contient l&#39;ensemble de la configuration de Nagios</li>
+<li>Ces deux répertoires contiennent les éléments utiles à l&#39;interface graphique</li>
+<li>Contient toutes les données variables maintenues par Nagios</li>
+</ul>
+<h2 is-upgraded><strong>Le fichier nagios.cfg</strong></h2>
+<p>Le fichier <code>nagios.cfg</code> est le fichier de configuration principal de Nagios. Au démarrage, c&#39;est ce fichier que le programme Nagios va lire en premier. Toute la configuration se trouve dans ce fichier ou dans d&#39;autres fichiers qui y sont référencés.</p>
+<ol type="1" start="3">
+<li>Dans quel répertoire se trouve ce fichier ?</li>
+</ol>
+<p>En lisant le fichier <code>nagios.cfg</code>, répondez aux questions ci-dessous : </p>
+<ol type="1" start="4">
+<li>Où se situe le fichier de logs ?</li>
+<li>A quoi sert l&#39;instruction <code>check_external_commands=0</code> ? Est-ce la bonne configuration ?</li>
+<li>Quel est l&#39;utilité du fichier <code>ressource.cfg</code> ?</li>
+</ol>
+<h2 is-upgraded><strong>Le fichier cgi.cfg</strong></h2>
+<p>Nagios est basé sur une interface Web pour générer ses rapports. Cette interface Web est générée dynamiquement par des scripts CGI. Le fichier cgi.cfg a pour but de configurer cet interfaçage.</p>
+<ol type="1" start="7">
+<li>Rappeler le fonctionnement d&#39;un script CGI.</li>
+<li>Vérifier que l&#39;utilisateur nagiosadmin a bien les droits nécessaires.</li>
+<li>Modifier la fréquence de rafraîchissement de l&#39;écran</li>
+<li>A quoi sert la ligne <code>main_config_file=/usr/local/nagios/etc/nagios.cfg</code> ?</li>
+<li>A quoi sert la ligne <code>url_html_path=/nagios</code> ?</li>
+<li>A quoi sert la ligne <code>use_authentication=1</code> ?</li>
+<li>Quel login permet l&#39;accès ?</li>
+</ol>
+<h2 is-upgraded><strong>Le fichier nagios.log</strong></h2>
+<ol type="1" start="14">
+<li>Dans quel répertoire se trouve le fichier <code>nagios.log</code> ? Que contient-il ?</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Démarrage du serveur :" duration="0">
+        <ol type="1" start="1">
+<li>Démarrer le serveur s&#39;il n&#39;est pas déjà démarré.</li>
+<li>Tester l&#39;interface web : http://@IPduServeur/nagios. Elle devrait ressembler à l&#39;image ci-dessous :</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\\af04456b6814fb5.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Comment Nagios se supervise lui-même" duration="0">
+        <p>Dans cette étape nous allons superviser un premier équipement. Pour commencer nous allons superviser le serveur qui héberge Nagios. En d&#39;autres termes nous allons superviser le serveur Nagios avec Nagios.</p>
+<p>Le fonctionnement de Nagios se base sur quatre éléments essentiels :</p>
+<ul>
+<li>les <strong>plugins</strong> :  ce sont des programmes exécutables par Nagios (ex binaires compilés, script Perl, script Bash, etc)</li>
+<li>la <strong>command</strong>. : cet objet appartient à Nagios et permet de définir le lancement d&#39;un plugin </li>
+<li>le <strong>host</strong> : cet objet appartient à Nagios et représente tous les équipements à superviser. Ils possèdent généralement une adresse IP</li>
+<li>le <strong>service</strong> :  cet objet appartient à Nagios et représente toutes les données à superviser sur un host (par exemple la charge CPU, les ports ouverts d&#39;un switch, des services applicatifs comme le service SSH ou HTTP d&#39;un serveur)</li>
+</ul>
+<h2 is-upgraded><strong>Les plugins</strong></h2>
+<p>Le plugin est responsable de contacter le host, de tester son statut et de récupérer les données associées.</p>
+<p>Important : chaque plugin fonctionne de manière autonome et indépendant.</p>
+<ol type="1" start="1">
+<li>Quelle est l&#39;adresse IP de la machine virtuelle ?</li>
+<li>Exécutez le plugin <code>check_ping</code> de manière indépendante, en lançant la commande suivante et en remplaçant le &#34;localhost&#34; par l&#39;adresse IP de la machine :</li>
+</ol>
+<p><code>/usr/local/nagios/libexec/check_ping -H localhost -w 40,40% -c 60,60%</code></p>
+<p><code>La commande possède 3 arguments :</code></p>
+<ul>
+<li><code> -H localhost</code> : demande de vérifier que le serveur localhost est bien défini de la même manière que dans le fichier <code>/etc/hosts</code></li>
+<li><code>-w 40,40% :</code>  indique un seuil WARNING à 40 ms et/ou 40 % de paquets perdus</li>
+<li><code>-c 60,60% :</code> indique un seuil CRITICAL à 60 ms et/ou 60 % de paquets perdus.</li>
+</ul>
+<ol type="1" start="3">
+<li>En analysant le résultat, quel est le statut de la réponse ? </li>
+<li>Quel est le temps d&#39;aller-retour de la requête ? Quel est le pourcentage de paquets perdus ?</li>
+</ol>
+<p>Ces informations sont comparées aux seuils passés en paramètre afin de déterminer le statut de cette supervision.</p>
+<ol type="1" start="5">
+<li>Modifier la commande précédente afin d&#39;obtenir un statut &#34;Warning&#34; comme dans la réponse ci-dessous:</li>
+</ol>
+<p><code>PING WARNING -  Paquets perdus = 0%, RTA = 0.06 ms|rta=0.059000ms;;60.000000;0.000000 pl=0%;;60;0</code></p>
+<ol type="1" start="6">
+<li>De même sonder le site www.wikipédia.fr avec un seuil warning de 5ms et/ou 40% de paquets perdus. Et un seuil critical de 20ms et/ou 60% de paquet perdus. Si la commande ne fonctionne pas indiquez comment vous avez résolu le problème.</li>
+</ol>
+<h2 is-upgraded><strong>Les commandes</strong></h2>
+<p>Au-dessus des plugins se trouvent les commandes Nagios. Deux caractéristiques les définissent :</p>
+<ul>
+<li>leur nom. L&#39;idée est de bien nommer ces commandes pour que leurs rôles soient intelligibles au premier coup d&#39;œil</li>
+<li>le chemin vers le plugin à lancer avec, éventuellement, les arguments associés.</li>
+</ul>
+<ol type="1" start="7">
+<li>Positionnez-vous dans le répertoire /usr/local/nagios/ets/objects quel est le contenu de ce dossier ?</li>
+<li>Editer le fichier &#34;commands.cfg&#34;</li>
+</ol>
+<p>Pour définir une commande qui exécutera le plugin check_ping sur localhost comme vu précédemment, il faut ajouter, la syntaxe suivante :</p>
+<pre>define command {
+command_name check-ping-localhost
+command_line /usr/local/nagios/libexec/check_ping -H 127.0.0.1 -w 40,40% -c 60,60%
+}</pre>
+<ol type="1" start="9">
+<li>Vérifier votre configuration en faisant un test Nagio</li>
+</ol>
+<p><code>Sudo /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg</code></p>
+<ol type="1" start="10">
+<li>Puis relancer Nagios</li>
+</ol>
+<h2 is-upgraded><strong>Les hosts</strong></h2>
+<p>Maintenant que vous disposez d&#39;une commande vous permettant d&#39;effectuer un check_ping avec vos propres arguments, il faut définir l&#39;objet Nagios host afin d&#39;ajouter sa supervision.</p>
+<p>Vous allez devoir définir les directives minimales suivantes :</p>
+<ul>
+<li>host_name : c&#39;est le nom de l&#39;objet tel qu&#39;il sera reconnu par Nagios. Le champ est libre, mais il faut être le plus précis possible afin d&#39;éviter les confusions ;</li>
+<li>address : l&#39;adresse IP ou le nom pour joindre l&#39;objet (par exemple, locahost,www.unsupersite.com, etc.) ;</li>
+<li>max_check_attemps : cette directive spécifie à Nagios le nombre de tentatives successives maximum renvoyant un résultat négatif avant que Nagios considère ce résultat comme fiable et passe l&#39;objet au statut déclenchant des notifications. C&#39;est une directive très importante.</li>
+<li>check_command : c&#39;est cette directive qui fait la liaison entre votre commande précédemment définie et cet objet host !</li>
+</ul>
+<ol type="1" start="11">
+<li>Positionnez-vous dans le répertoire /usr/local/nagios/ets/objects puis éditer le fichier localhost.cfg en ajoutant les lignes suivantes :</li>
+</ol>
+<pre>define host {
+host_name Nagios Server
+address 127.0.0.1
+check_command check-ping-localhost
+max_check_attempts 3
+Contacts nagiosadmin
+}</pre>
+<ol type="1" start="12">
+<li>Faire un test nagios pour vérifier qu&#39;il n&#39;y a pas d&#39;erreur. Puis relancer nagios.</li>
+<li>Aller sur l&#39;interface de Nagio, rubrique host et vérifiez que votre host apparaît.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\\9afc9f47251ceafd.png"></p>
+<h2 is-upgraded><strong>Les services</strong></h2>
+<p>Dernier élément de configuration : les services, qui sont des objets obligatoirement rattachés à un host. Pour les observer en détails, lancez dans un premier temps la commande suivante :</p>
+<pre>/usr/local/nagios/libexec/check_ssh localhost</pre>
+<ol type="1" start="14">
+<li>Si le message d&#39;erreur <code>Connection refused</code> apparaît, chercher sur internet les commandes pour résoudre le problème</li>
+</ol>
+<p>Tout comme pour le host, il faut, afin de superviser ce service, commencer par créer la commande associée :</p>
+<pre>define command {
+command_name check-ssh-localhost
+command_line /usr/local/nagios/libexec/check_ssh localhost
+}</pre>
+<p>Ensuite, il faut définir un objet service. Cet objet possède ses propres directives.</p>
+<p>Voici la liste des directives minimale pour l&#39;objet service :</p>
+<ul>
+<li>service_description : c&#39;est l&#39;identifiant du service. Il doit être unique pour chaque host ;</li>
+<li>host_name : c&#39;est la référence à l&#39;objet host hébergeant le service à superviser. Attention : la valeur de cette directive doit correspondre à celle de la directive host_name de l&#39;objet host concerné ;</li>
+<li>check_command : cette directive permet d&#39;indiquer la commande à exécuter pour effectuer la supervision ;</li>
+<li>max_check_attempt : possède la même signification que pour le host.</li>
+</ul>
+<p>La définition d&#39;un tel objet service donnerait quelque chose comme :</p>
+<pre>define service {
+service_description SSH sur Nagios Server
+host_name Nagios Server
+check_command check-ssh-localhost
+max_check_attempts 3
+}</pre>
+<ol type="1" start="15">
+<li>Faire un test nagios pour vérifier qu&#39;il n&#39;y a pas d&#39;erreur. Puis relancer nagios.</li>
+<li>Aller sur l&#39;interface de Nagio, rubrique Services et vérifiez que votre host apparaît</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\\f2791d8b89cff891.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Supervision d&#39;un premier service" duration="0">
+        <ol type="1" start="1">
+<li>Superviser une machine intitulée &#34;PC 1&#34; ayant pour adresse IP 127.0.0.1. Vous superviserez le ping et le service SSH de cette machine.</li>
+<li>Prendre une capture d&#39;écran de votre interface nagios, rubrique Hosts.</li>
+<li>Quels contenus avez-vous ajoutés aux fichiers localhost.cfg et command.cfg ?</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
